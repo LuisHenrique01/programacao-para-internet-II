@@ -24,7 +24,7 @@ class Post(models.Model):
 
     title = models.TextField()
     body = models.TextField()
-    userId = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    userId = models.ForeignKey(Profile, related_name='posts', on_delete=models.CASCADE)
 
     class Meta:
         """Meta definition for Post."""
@@ -43,7 +43,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=250)
     email = models.EmailField(max_length=254)
     body = models.TextField()
-    postId = models.ForeignKey(Post, on_delete=models.CASCADE)
+    postId = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
 
     class Meta:
         """Meta definition for Comment."""
