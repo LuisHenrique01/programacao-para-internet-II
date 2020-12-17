@@ -8,6 +8,14 @@ class Profile(models.Model):
     email = models.EmailField(max_length=254)
     address = models.JSONField()
 
+    def total_posts(self):
+        total_posts = Post.objects.filter(userId=self).count()
+        return total_posts
+    
+    def total_comments(self):
+        total_comments = Comment.objects.filter(postId__userId=self).count()
+        return total_comments
+        
     class Meta:
         """Meta definition for MODELNAME."""
 

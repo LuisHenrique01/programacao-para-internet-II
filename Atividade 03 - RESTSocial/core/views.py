@@ -1,7 +1,8 @@
 from rest_framework.response import Response
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from core.models import Profile, Post, Comment
-from core.serializers import ProfileSerializer, ProfilePostSerializer, PostSerializer, CommentSerializer
+from core.serializers import ProfileSerializer, ProfilePostSerializer, PostSerializer, CommentSerializer, TotaPostsCommentsSerializer
 # Create your views here.
 
 class ProfileView(generics.ListCreateAPIView):
@@ -59,3 +60,18 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         queryset = Comment.objects.filter(postId=self.kwargs.get('postId'))
         return queryset
+    
+    
+class TotaPostsCommentsView(APIView):
+    
+    def get(self, *args, **kargs):
+        user = Profile.objects.get(id=kargs['pk'])
+        total_posts = user.total_posts()
+        total_comments = user.total_comments()
+        data = {'pk': user.id, 
+                'name': user.name,
+                'total_posts': total_posts,
+                'total_comments': total_comments}
+        serializer = TotaPostsCommentsSerializer(data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    

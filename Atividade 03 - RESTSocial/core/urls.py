@@ -1,5 +1,5 @@
 from django.urls import path
-from core.views import ProfileView, ProfileDetailView, ProfilePostView, PostView, PostDetailView, CommentView, CommentDetailView
+from core.views import ProfileView, ProfileDetailView, ProfilePostView, PostView, PostDetailView, CommentView, CommentDetailView, TotaPostsCommentsView
 
 urlpatterns = [
     path('profiles/', ProfileView.as_view(), name='Profile'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('posts-comments/<int:pk>/', PostDetailView.as_view(), name='PostDetail'),
     path('posts/<int:postId>/comments/', CommentView.as_view(), name='PostsComments'),
     path('posts/<int:postId>/comments/<int:pk>/', CommentDetailView.as_view(), name='PostsCommentsDetail'),
+    path('total-posts-comments/<int:pk>/', TotaPostsCommentsView.as_view(), name='TotaPostsComments'),
 ]
