@@ -1,7 +1,8 @@
 from django.urls import path
-from core.views import ProfileView, ProfileDetailView, ProfilePostView, PostView, PostDetailView, CommentView, CommentDetailView, TotaPostsCommentsView
+from core.views import ProfileView, ProfileDetailView, ProfilePostView, PostView, PostDetailView, CommentView, CommentDetailView, TotaPostsCommentsView, ApiRootView
 
 urlpatterns = [
+    path('', ApiRootView.as_view(), name='ApiRoot'),
     path('profiles/', ProfileView.as_view(), name='Profile'),
     path('profiles/<int:pk>', ProfileDetailView.as_view(), name='ProfileDetail'),
     path('profile-posts/', ProfilePostView.as_view(), name='ProfilePost'),

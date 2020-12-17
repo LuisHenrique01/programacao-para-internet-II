@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from core.models import Profile, Post, Comment
@@ -23,7 +24,7 @@ class ProfilePostView(generics.ListAPIView):
 class PostView(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    
+
     
 class PostDetailView(generics.RetrieveAPIView):
     queryset = Post.objects.all()
@@ -33,6 +34,7 @@ class PostDetailView(generics.RetrieveAPIView):
 class CommentView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
     
     def get_queryset(self):
         queryset = Comment.objects.filter(postId=self.kwargs.get('postId'))
@@ -64,7 +66,7 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     
 class TotaPostsCommentsView(APIView):
     
-    def get(self, *args, **kargs):
+    def get(self, request, *args, **kargs):
         user = Profile.objects.get(id=kargs['pk'])
         total_posts = user.total_posts()
         total_comments = user.total_comments()
@@ -75,3 +77,11 @@ class TotaPostsCommentsView(APIView):
         serializer = TotaPostsCommentsSerializer(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+
+class ApiRootView(APIView):
+    
+    def get(self, request, *args, **kargs):
+        return Response({'profile': reverse('Profile', request=request),
+                         'profile-posts': reverse('ProfilePost', request=request),
+                         'post': reverse('Post', request=request),
+                         })
